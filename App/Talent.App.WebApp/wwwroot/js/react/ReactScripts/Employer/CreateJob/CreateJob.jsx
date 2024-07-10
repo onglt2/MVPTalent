@@ -57,6 +57,8 @@ export default class CreateJob extends React.Component {
     componentDidMount() {
         this.init();
         this.loadData();
+
+        //const jobId = this.props.match.params.id;
     };
 
     loadData() {
@@ -66,8 +68,8 @@ export default class CreateJob extends React.Component {
         var copyJobParam = this.props.match.params.copyId ? this.props.match.params.copyId : "";
 
         if (param != "" || copyJobParam != "") {
-            var link = param != "" ? 'http://localhost:51689/listing/listing/GetJobByToEdit?id=' + param
-                : 'http://localhost:51689/listing/listing/GetJobForCopy?id=' + copyJobParam;
+            var link = param != "" ? 'https://mvpstandard-l.azurewebsites.net/listing/listing/GetJobByToEdit?id=' + param
+                : 'https://mvpstandard-l.azurewebsites.net/listing/listing/GetJobForCopy?id=' + copyJobParam;
             var cookies = Cookies.get('talentAuthToken');
             $.ajax({
                 url: link,
@@ -100,7 +102,7 @@ export default class CreateJob extends React.Component {
         console.log("date:", jobData.jobDetails.startDate);
         var cookies = Cookies.get('talentAuthToken');   
         $.ajax({
-            url: 'http://localhost:51689/listing/listing/createUpdateJob',
+            url: 'https://mvpstandard-l.azurewebsites.net/listing/listing/createUpdateJob',
             headers: {
                 'Authorization': 'Bearer ' + cookies,
                 'Content-Type': 'application/json'

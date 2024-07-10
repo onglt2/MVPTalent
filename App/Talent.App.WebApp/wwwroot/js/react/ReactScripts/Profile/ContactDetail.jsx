@@ -6,10 +6,11 @@ export class IndividualDetailSection extends Component {
     constructor(props) {
         super(props)
 
-        const details = props.details ?
-            Object.assign({}, props.details)
+        const details = this.props.details != null ?
+            Object.assign({}, this.props.details)
             : {
                 firstName: "",
+                lastName: "",
                 email: "",
                 phone: ""
             }
@@ -29,6 +30,7 @@ export class IndividualDetailSection extends Component {
 
     openEdit() {
         const details = Object.assign({}, this.props.details)
+
         this.setState({
             showEditSection: true,
             newContact: details
@@ -49,9 +51,7 @@ export class IndividualDetailSection extends Component {
         })
     }
 
-    saveContact() {
-        console.log(this.props.componentId)
-        console.log(this.state.newContact)
+    saveContact() {        
         const data = Object.assign({}, this.state.newContact)
         this.props.controlFunc(this.props.componentId, data)
         this.closeEdit()
@@ -63,7 +63,7 @@ export class IndividualDetailSection extends Component {
         )
     }
 
-    renderEdit() {
+    renderEdit() {        
         return (
             <div className='ui sixteen wide column'>
                 <ChildSingleInput
@@ -75,7 +75,20 @@ export class IndividualDetailSection extends Component {
                     maxLength={80}
                     placeholder="Enter your first name"
                     errorMessage="Please enter a valid first name"
+                    
                 />
+
+                <ChildSingleInput
+                    inputType="text"
+                    label="Last Name"
+                    name="lastName"
+                    value={this.state.newContact.lastName}
+                    controlFunc={this.handleChange}
+                    maxLength={80}
+                    placeholder="Enter your last name"
+                    errorMessage="Please enter a valid last name"
+                />
+
                 <ChildSingleInput
                     inputType="text"
                     label="Email address"
@@ -105,16 +118,17 @@ export class IndividualDetailSection extends Component {
     }
 
     renderDisplay() {
-
-        let firstName = this.props.details ? `${this.props.details.firstName}` : ""
-        let email = this.props.details ? this.props.details.email : ""
-        let phone = this.props.details ? this.props.details.phone : ""
-
+        
+        let firstName = this.props.details !=null ? `${this.props.details.firstName}` : ""
+        let lastName = this.props.details != null ? `${this.props.details.lastName}` : ""
+        let email = this.props.details != null ? this.props.details.email : ""
+        let phone = this.props.details != null ? this.props.details.phone : "" 
         return (
             <div className='row'>
                 <div className="ui sixteen wide column">
                     <React.Fragment>
-                        <p>Name: {firstName}</p>
+                        <p>Name: {firstName}, {lastName}</p>
+                        {/*<p>Last Name: {lastName}</p>*/}
                         <p>Email: {email}</p>
                         <p>Phone: {phone}</p>
                     </React.Fragment>
@@ -135,7 +149,8 @@ export class CompanyDetailSection extends Component {
             : {
                 name: "",
                 email: "",
-                phone: ""
+                phone: "",
+                location: ""
             }
 
         this.state = {
@@ -237,7 +252,7 @@ export class CompanyDetailSection extends Component {
         let companyName = this.props.details ? this.props.details.name : ""
         let email = this.props.details ? this.props.details.email : ""
         let phone = this.props.details ? this.props.details.phone : ""
-        let location = {city:'',country:''}
+        let location = { city: '', country: '' }
         if (this.props.details && this.props.details.location) {
             location = this.props.details.location
         }
@@ -251,7 +266,8 @@ export class CompanyDetailSection extends Component {
                         <p>Phone: {phone}</p>
                         <p> Location: {location.city}, {location.country}</p>
                     </React.Fragment>
-                    <button type="button" className="ui right floated teal button">Edit</button>
+                    
+                    <button type="button" className="ui right floated teal button" onClick={this.openEdit}>Edit</button>
                 </div>
             </div>
         )
