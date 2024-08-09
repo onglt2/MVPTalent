@@ -50,10 +50,11 @@ export default class TalentFeed extends React.Component {
         this.init()
     };
 
-    loadFeedData() {
-        const { feedData, loadPosition, loadNumber } = this.state;
+    loadFeedData() {        
+        let { feedData, loadPosition, loadNumber } = this.state;
 
-        var cookies = Cookies.get('talentAuthToken');
+        let cookies = Cookies.get('talentAuthToken');
+
         $.ajax({
            
             url: 'https://mvpstandard-p.azurewebsites.net/profile/profile/getTalent',
@@ -75,9 +76,34 @@ export default class TalentFeed extends React.Component {
         })
     }
 
-    render() {
-        const { feedData, loadingFeedData } = this.state;
+    renderTalentCards() {
+        const { feedData } = this.state;
 
+        if (feedData.length > 0) {
+            return feedData.map((feed, index) => (
+                <TalentCard key={index} feed={feed} />
+            ));
+        } else {
+            return <p>No talent profile to display.</p>;
+        }
+    }
+
+    renderLoadingSpinner() {
+        const { loadingFeedData } = this.state;
+
+        if (loadingFeedData) {
+            return (
+                <Container fluid className="center aligned">
+                    <Icon loading name='spinner' size="huge" />
+                </Container>
+            );
+        }
+
+        return null;
+    }
+
+    render() {
+        
         return (
             <BodyWrapper reload={this.init} loaderData={this.state.loaderData}>
                 <div className="ui grid talent-feed container">
@@ -85,19 +111,8 @@ export default class TalentFeed extends React.Component {
                         <CompanyProfile />
                     </div>
                     <div className="eight wide column ">
-                        {feedData.length > 0 ? feedData.map((feed, index) => (
-                            <TalentCard key={index} feed={feed} />
-                        )) : (
-                            <p>No talent profile to display.</p> 
-                        )}
-
-                        {loadingFeedData ?
-                            <Container fluid className="center aligned">
-                                <Icon loading name='spinner' size="huge" />
-                            </Container>
-                            :
-                            null
-                        }
+                        {this.renderTalentCards()}
+                        {this.renderLoadingSpinner()}
                     </div>
                     <div className="four wide column">
                         <div className="ui card">

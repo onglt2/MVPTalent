@@ -10,7 +10,6 @@ export default class TalentCard extends React.Component {
             showSnapshot: false,
         }
 
-        this.renderSnapshot = this.renderSnapshot.bind(this);
     };
 
     renderSnapshot() {
@@ -73,10 +72,26 @@ export default class TalentCard extends React.Component {
         )
     }
 
+	renderSkills() {
+        const { skills } = this.props.feed;
+
+        return (
+            <Card.Content >
+                {skills.length > 0 ?
+                    skills.map((skill, index) =>
+                        <Button key={index} basic size="tiny" compact color="blue" content={skill} />
+                    )
+                    :
+                    <Button basic disabled size="tiny" compact color="grey" content="N/A" />
+                }
+            </Card.Content>
+        );
+    }
+	
     render() {
         if (this.props.feed) {
             const { showSnapshot } = this.state;
-            const { name, skills } = this.props.feed;
+            const { name } = this.props.feed;
 
             return (
                 <Card fluid>
@@ -101,16 +116,8 @@ export default class TalentCard extends React.Component {
                                 <Icon size="large" name="github" link />
                             </Grid.Column>
                         </Grid>
-                    </Card.Content>
-                    <Card.Content >
-                        {skills.length > 0 ?
-                            skills.map((skill, index) =>
-                                <Button key={index} basic size="tiny" compact color="blue" content={skill} />
-                            )
-                            :
-                            <Button basic disabled size="tiny" compact color="grey" content="N/A" />
-                        }
-                    </Card.Content>
+                    </Card.Content>                    
+                    {this.renderSkills()}
                 </Card >
             )
         }
