@@ -40,7 +40,7 @@ export default class CompanyProfile extends React.Component {
     }
 
     loadData() {
-        var cookies = Cookies.get('talentAuthToken');
+        let cookies = Cookies.get('talentAuthToken');
         $.ajax({
             url: 'https://mvpstandard-p.azurewebsites.net/profile/profile/getEmployerProfile',
             
